@@ -12,6 +12,10 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -87,53 +91,60 @@ public class CheckerActivity extends Activity {
             if (extensions.contains("GL_IMG_texture_compression_pvrtc")) {
                 //Use PVR compressed textures
                 Log.w("Ext", "Device supports PVR");
-                enabledCompressions += "Device supports PVR\n";
+                enabledCompressions += "Device supports PVR\n\t";
             }
             if (extensions.contains("GL_AMD_compressed_ATC_texture") ||
                     extensions.contains("GL_ATI_texture_compression_atitc")) {
                 //Load ATI Textures
                 Log.w("Ext", "Device supports ATI");
-                enabledCompressions += "Device supports ATI\n";
+                enabledCompressions += "Device supports ATI\n\t";
             }
             if (extensions.contains("GL_OES_texture_compression_S3TC") ||
                     extensions.contains("GL_EXT_texture_compression_s3tc")) {
                 //Use DTX Textures
                 Log.w("Ext", "Device supports S3TC");
-                enabledCompressions += "Device supports S3TC\n";
+                enabledCompressions += "Device supports S3TC\n\t";
             }
             if (extensions.contains("GL_EXT_texture_compression_dxt1")) {
                 //Use DTX1 Textures
                 Log.w("Ext", "Device supports DXT1");
-                enabledCompressions += "Device supports DXT1\n";
+                enabledCompressions += "Device supports DXT1\n\t";
             }
             if (extensions.contains("GL_EXT_texture_compression_dxt3")) {
                 //Use DTX3 Textures
                 Log.w("Ext", "Device supports DXT3");
-                enabledCompressions += "Device supports DXT3\n";
+                enabledCompressions += "Device supports DXT3\n\t";
             }
             if (extensions.contains("GL_EXT_texture_compression_dxt5")) {
                 //Use DTX5 Textures
                 Log.w("Ext", "Device supports DXT5");
-                enabledCompressions += "Device supports DXT5\n";
+                enabledCompressions += "Device supports DXT5\n\t";
             }
             if (extensions.contains("GL_AMD_compressed_3DC_texture")) {
                 //Use 3DC Texture
                 Log.w("Ext", "Device supports 3DC textures");
-                enabledCompressions += "Device supports 3DC textures\n";
+                enabledCompressions += "Device supports 3DC textures\n\t";
             }
             if (ETC1Util.isETC1Supported()) {
                 //Use ETC1
                 Log.w("Ext", "Device supports ETC1 Rgb8 textures");
-                enabledCompressions += "Device supports ETC1 Rgb8 textures\n";
+                enabledCompressions += "Device supports ETC1 Rgb8 textures\n\t";
             }
             final String enabComprFinal = enabledCompressions;
+            String[] extArray = extensions.split(" ");
+            final List<String> ordered = Arrays.asList(extArray);
+            Collections.sort(ordered);
             CheckerActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    glExtensionsTv.setText("Extensions: " + extensions);
+                    String extFormatted = "";
+                    for (String singleExt : ordered) {
+                        extFormatted += singleExt + "\n\t";
+                    }
+                    glExtensionsTv.setText("Extensions: \n\t" + extFormatted);
                     glVersionTv.setText("Version: " + version);
                     glRendererTv.setText("Renderer: " + renderer);
-                    glExtensionsEnabled.setText("Texture Compression Supported: " + enabComprFinal);
+                    glExtensionsEnabled.setText("Texture Compression Supported: \n\t" + enabComprFinal);
                 }
             });
         }

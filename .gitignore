@@ -6,6 +6,7 @@ ic_launcher-web.png
 
 # Built application files
 *.ap_
+*.exe
 
 # Files for the Dalvik VM
 *.dex
